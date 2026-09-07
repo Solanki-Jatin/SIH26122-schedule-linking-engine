@@ -1,0 +1,5 @@
+task_id,description,report_date,percent_complete,reported_by
+CIV-001,Excavate foundation pit for pump house,2026-01-09,100,Ramesh
+CIV-002,Pour foundation concrete for pump house,2026-01-15,100,Ramesh
+CIV-003,Cure and strip formwork pump house foundation,2026-01-20,100,Ramesh
+ELE-001,Lay power cable route to pump house,2026-01-24,100,Priya
