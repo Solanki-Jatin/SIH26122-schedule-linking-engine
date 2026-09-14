@@ -173,11 +173,17 @@ rather than a fabricated average when the store is empty.
 
 ### Layer 6: API + dashboard
 
-**Status: not yet built.** FastAPI routes exposing: schedule state,
-submit-report endpoint (triggers layer 1 -> 3 -> 4), recompute diff
-endpoint, institutional memory query endpoint. React frontend consumes
-these for Gantt view (frappe-gantt or dhtmlx-gantt), DAG/graph view
-(vis.js or d3), and a risk heatmap over the current schedule.
+**Status: built and tested.** FastAPI routes exposing: schedule state
+(`GET /schedule`), submit-report endpoint (`POST /reports/text`, triggers
+layer 1 -> 3, auto-applies via layer 4 when confidence clears the
+threshold), manual confirmation (`POST /reports/confirm`), structured CSV
+intake (`POST /reports/csv`), and institutional memory queries
+(`GET /memory/query`, `GET /memory/summary`). React frontend (Vite)
+consumes these for a Gantt view (frappe-gantt), a dependency graph laid
+out by each task's CPM-computed early_start rather than a generic force
+layout, a risk heatmap by discipline built from real critical/at-risk
+counts, a report intake form showing every match candidate and its real
+confidence score, and an institutional memory query panel.
 
 ## 5. Tech stack (final)
 
@@ -231,11 +237,11 @@ GET /memory/query?discipline=piping&metric=avg_delay
 
 ## 8. Build order (what's left)
 
-1. Layer 5: institutional memory store + query logic (PostgreSQL schema,
-   aggregate queries).
-2. Layer 6: FastAPI routes wiring layers 1-5 together per the contracts
-   above.
-3. Frontend: Gantt + graph view + risk heatmap consuming the API.
-4. Voice input wired into the free-text path via Web Speech API.
+1. ~~Layer 5: institutional memory store + query logic.~~ Done.
+2. ~~Layer 6: FastAPI routes wiring layers 1-5 together.~~ Done.
+3. ~~Frontend: Gantt + graph view + risk heatmap consuming the API.~~ Done.
+4. Voice input wired into the free-text path via Web Speech API (stretch,
+   demo can use typed text if time runs short).
 5. PPT content, using this document as the technical source of truth.
-6. Demo video script, once the full pipeline is demoable through the UI.
+6. Demo video script, once the full pipeline is demoable through the UI
+   (it now is).
