@@ -8,7 +8,8 @@
 | Organization | Oil India Limited |
 | Event | Smart India Hackathon 2026 (Finals) |
 | Team | Popeye |
-| Status | Core pipeline (layers 1-5) built and tested. API layer and dashboard in progress. |
+| Status | Full pipeline (layers 1-6) built and tested, including API and dashboard. Demo video and PPT remain. |
+| Sister project | [SIH26099-material-code-engine](https://github.com/Solanki-Jatin/SIH26099-material-code-engine) |
 
 ---
 
@@ -97,7 +98,7 @@ Layer 6: API + dashboard
 | 3. Linking engine | Fuzzy string match + TF-IDF semantic similarity, confidence-scored, never silently drops unmatched items | Built, tested |
 | 4. Recompute engine | Applies confirmed updates, re-runs CPM, diffs critical path and at-risk tasks, computes new forecast completion | Built, tested |
 | 5. Institutional memory | Structured, queryable store of confirmed execution events across projects | Built, tested |
-| 6. API + dashboard | FastAPI routes and a React dashboard (Gantt, graph view, risk heatmap) | In progress |
+| 6. API + dashboard | FastAPI routes and a React dashboard (Gantt, dependency graph, risk heatmap by discipline) | Built, tested |
 
 Full technical detail, including the exact data model, API contracts,
 and the reasoning behind each design choice, is in
@@ -127,15 +128,21 @@ backend/
     layer3_linking/          fuzzy + semantic linking engine
     layer4_recompute/        recompute + diff engine
     layer5_memory/           institutional memory store (SQLAlchemy)
-    layer6_api/               FastAPI routes (in progress)
+    layer6_api/               FastAPI routes, schemas, app state
   data/
     sample_schedules/        sample baseline schedule CSV
-    sample_reports/          sample field report inputs
-  tests/                      pytest suite, 11/11 passing
+    sample_reports/          sample free-text and structured field reports
+  tests/                      pytest suite, 19/19 passing
   scripts/
     demo_flow.py              end-to-end runnable demo of the full pipeline
   requirements.txt
-frontend/                     dashboard (in progress)
+frontend/
+  src/
+    components/               GanttChart, ScheduleTable, GraphView,
+                               RiskHeatmap, ReportIntake, MemoryPanel
+    lib/api.js                 API client for the layer 6 contract
+    App.jsx, main.jsx, styles.css
+  package.json
 docs/
   architecture.md             full architecture spec, data model, API contracts
 README.md
@@ -143,13 +150,34 @@ README.md
 
 ## Getting started
 
-Requires Python 3.12+.
+Requires Python 3.12+ and Node 18+.
 
 ```bash
 git clone https://github.com/<org>/SIH26122-schedule-linking-engine.git
 cd SIH26122-schedule-linking-engine/backend
 pip install -r requirements.txt
 ```
+
+### Running the backend API
+
+```bash
+cd backend
+uvicorn app.layer6_api.main:app --reload
+```
+
+Serves on `http://localhost:8000`. Interactive API docs at
+`http://localhost:8000/docs`.
+
+### Running the dashboard
+
+```bash
+cd frontend
+npm install
+cp .env.example .env   # points VITE_API_BASE at the backend above
+npm run dev
+```
+
+Serves on `http://localhost:5173`. Requires the backend to be running.
 
 ## Running the demo
 
@@ -170,20 +198,23 @@ cd backend
 python -m pytest tests/ -v
 ```
 
-Current suite: 11 tests, all passing, covering CPM correctness (single
+Current suite: 19 tests, all passing. Covers CPM correctness (single
 chains, parallel paths, cycle detection, actual-duration overrides),
 linking engine behavior (correct matches, unmatched items flagged not
-dropped, sorted candidates), and institutional memory (real aggregates,
+dropped, sorted candidates), institutional memory (real aggregates,
 disciplines isolated correctly, empty-store queries return `None` rather
-than a fabricated number).
+than a fabricated number), and the layer 6 API endpoints end to end
+(schedule retrieval, report submission and auto-linking, manual
+confirmation, unknown-task 404 handling, memory queries).
 
 ## Project status
 
-Layers 1 through 5 are built, wired together, and covered by a passing
-test suite. `backend/scripts/demo_flow.py` is a real, runnable
-walkthrough of the core value proposition, not a mockup. Remaining work:
-layer 6 (FastAPI routes per the contracts in `docs/architecture.md`),
-the React dashboard, voice input wiring, and the demo video.
+All six layers are built, wired together, and covered by a passing test
+suite: capture, schedule graph and CPM, linking, recompute, institutional
+memory, and the FastAPI + React layer. `backend/scripts/demo_flow.py` is
+a real, runnable walkthrough of the core value proposition end to end.
+Remaining work: the demo video, and folding this into the PPT and drive
+documentation.
 
 ## Design and documentation standards
 
@@ -204,4 +235,4 @@ codebase.
 
 ## Team
 
-**Popeye** - Smart India Hackathon 2026.
+**Popeye** - Smart India Hackathon 2026 finalists.
