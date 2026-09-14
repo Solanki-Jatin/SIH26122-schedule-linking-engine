@@ -9,7 +9,6 @@
 | Event | Smart India Hackathon 2026 (Finals) |
 | Team | Popeye |
 | Status | Full pipeline (layers 1-6) built and tested, including API and dashboard. Demo video and PPT remain. |
-| Sister project | [SIH26099-material-code-engine](https://github.com/Solanki-Jatin/SIH26099-material-code-engine) |
 
 ---
 
@@ -235,4 +234,4 @@ codebase.
 
 ## Team
 
-**Popeye** - Smart India Hackathon 2026 finalists.
+**Popeye** - Smart India Hackathon 2026.
