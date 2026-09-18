@@ -111,7 +111,7 @@ export default function App() {
         <div className="panel__header">
           <span className="panel__title">Dependency graph</span>
         </div>
-        <div className="panel__body">
+        <div className="panel__body" style={{ overflowX: "auto" }}>
           <GraphView tasks={schedule.tasks} />
         </div>
       </div>
