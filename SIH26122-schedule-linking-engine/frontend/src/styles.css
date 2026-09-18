@@ -1,0 +1,373 @@
+/*
+  Design direction: this is engineering project-management software for an
+  infrastructure execution team, closer in spirit to Primavera or a plant
+  control-room display than a consumer SaaS dashboard. Palette leans steel
+  blue and graphite with functional status colors (rust for critical path,
+  amber for at-risk, green for on-track), not decorative ones. Task IDs,
+  dates, and confidence scores use a monospace face because they are real
+  technical identifiers being scanned quickly, not for aesthetic effect.
+*/
+
+:root {
+  --bg: #f5f6f2;
+  --surface: #ffffff;
+  --border: #dee1d8;
+  --border-strong: #b6bcae;
+
+  --text-primary: #1a2330;
+  --text-secondary: #5a6472;
+  --text-muted: #8a92a0;
+
+  --accent: #2b4c6f;
+  --accent-strong: #1c3550;
+  --accent-tint: #e6ecf1;
+
+  --critical: #b23a2e;
+  --critical-tint: #f7e7e5;
+  --at-risk: #b8760f;
+  --at-risk-tint: #f8ecd8;
+  --on-track: #3e7d53;
+  --on-track-tint: #e7f0ea;
+
+  --font-sans: "IBM Plex Sans", -apple-system, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.app {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 32px 64px;
+}
+
+/* Top bar */
+.topbar {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 28px 0 20px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 28px;
+}
+
+.topbar__title {
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.topbar__subtitle {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+.topbar__metric {
+  text-align: right;
+}
+
+.topbar__metric-value {
+  font-family: var(--font-mono);
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--accent-strong);
+}
+
+.topbar__metric-label {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+/* Layout grid */
+.grid {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.grid > div {
+  min-width: 0;
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+
+.panel__header {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.panel__title {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.panel__body {
+  padding: 18px;
+}
+
+.panel + .panel {
+  margin-top: 20px;
+}
+
+/* Schedule table */
+.schedule-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.schedule-table th {
+  text-align: left;
+  font-weight: 500;
+  color: var(--text-secondary);
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+  font-size: 12px;
+}
+
+.schedule-table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+
+.schedule-table tr.is-critical {
+  border-left: 3px solid var(--critical);
+}
+
+.schedule-table tr.is-at-risk:not(.is-critical) {
+  border-left: 3px solid var(--at-risk);
+}
+
+.schedule-table tr:not(.is-critical):not(.is-at-risk) {
+  border-left: 3px solid transparent;
+}
+
+.mono {
+  font-family: var(--font-mono);
+}
+
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 3px;
+  font-size: 11px;
+  font-family: var(--font-mono);
+}
+
+.badge--critical {
+  background: var(--critical-tint);
+  color: var(--critical);
+}
+
+.badge--at-risk {
+  background: var(--at-risk-tint);
+  color: var(--at-risk);
+}
+
+.badge--ok {
+  background: var(--on-track-tint);
+  color: var(--on-track);
+}
+
+/* Gantt container (frappe-gantt injects its own SVG) */
+.gantt-container {
+  overflow-x: auto;
+}
+
+.gantt-container .bar-critical .bar {
+  fill: var(--critical) !important;
+}
+
+/* Report intake form */
+.field {
+  margin-bottom: 14px;
+}
+
+.field label {
+  display: block;
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-bottom: 5px;
+}
+
+.field textarea,
+.field input,
+.field select {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--border-strong);
+  border-radius: 3px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  background: var(--surface);
+  color: var(--text-primary);
+}
+
+.field textarea {
+  min-height: 64px;
+  resize: vertical;
+}
+
+.btn {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 9px 16px;
+  border-radius: 3px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background: var(--accent-strong);
+}
+
+.btn:disabled {
+  background: var(--border-strong);
+  cursor: not-allowed;
+}
+
+.candidate-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+
+.candidate-row:last-child {
+  border-bottom: none;
+}
+
+.confidence-bar {
+  width: 60px;
+  height: 6px;
+  background: var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-left: 10px;
+}
+
+.confidence-bar__fill {
+  height: 100%;
+  background: var(--accent);
+}
+
+.result-banner {
+  padding: 10px 14px;
+  border-radius: 3px;
+  font-size: 13px;
+  margin-bottom: 14px;
+}
+
+.result-banner--applied {
+  background: var(--on-track-tint);
+  color: var(--on-track);
+}
+
+.result-banner--review {
+  background: var(--at-risk-tint);
+  color: var(--at-risk);
+}
+
+/* Risk heatmap */
+.heatmap-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+}
+
+.heatmap-row__label {
+  width: 140px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  text-transform: capitalize;
+}
+
+.heatmap-row__track {
+  flex: 1;
+  height: 20px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+  display: flex;
+}
+
+.heatmap-cell {
+  height: 100%;
+}
+
+/* Memory panel */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.stat {
+  text-align: center;
+  padding: 10px 6px;
+  background: var(--bg);
+  border-radius: 3px;
+}
+
+.stat__value {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.stat__label {
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+.empty-note {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.loading-note,
+.error-note {
+  font-size: 13px;
+  color: var(--text-secondary);
+  padding: 12px 0;
+}
+
+.error-note {
+  color: var(--critical);
+}

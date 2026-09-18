@@ -1,0 +1,13 @@
+task_id,name,discipline,duration_days,planned_start,planned_end,predecessors
+CIV-001,Excavate foundation pit for pump house,civil,4,2026-01-05,2026-01-09,
+CIV-002,Pour foundation concrete for pump house,civil,6,2026-01-09,2026-01-15,CIV-001
+CIV-003,Cure and strip formwork pump house foundation,civil,5,2026-01-15,2026-01-20,CIV-002
+STE-001,Deliver and place skid mounted pump unit,static_equipment,3,2026-01-20,2026-01-23,CIV-003
+PIP-001,Fabricate spool for Line 24 inch XX inlet,piping,5,2026-01-15,2026-01-20,CIV-002
+PIP-002,Erect Line 24 inch XX inlet spool,piping,4,2026-01-23,2026-01-27,STE-001;PIP-001
+PIP-003,Hydrotest Line 24 inch XX inlet,piping,3,2026-01-27,2026-01-30,PIP-002
+ELE-001,Lay power cable route to pump house,electrical,4,2026-01-20,2026-01-24,CIV-003
+ELE-002,Install MCC panel at pump house,electrical,3,2026-01-24,2026-01-27,ELE-001
+INS-001,Install pressure transmitter on Line 24 inch XX,instrumentation,2,2026-01-30,2026-02-01,PIP-003
+INS-002,Loop check instrumentation pump house,instrumentation,3,2026-02-01,2026-02-04,INS-001;ELE-002
+HSE-001,Pre-commissioning safety walkdown pump house,hse,1,2026-02-04,2026-02-05,INS-002

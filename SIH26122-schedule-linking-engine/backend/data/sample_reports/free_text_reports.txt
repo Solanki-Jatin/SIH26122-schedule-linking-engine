@@ -1,0 +1,12 @@
+# One free-text supervisor report per line, format: YYYY-MM-DD | reporter | text
+# Used to demo layer 1 (free-text intake) and layer 3 (fuzzy/semantic linking).
+2026-01-09 | Ramesh (Civil Supervisor) | foundation pit dug out, pump house area, finished
+2026-01-15 | Ramesh (Civil Supervisor) | concrete poured for pump house base, curing started
+2026-01-23 | Suresh (Piping Foreman) | pump skid placed and aligned at pump house
+2026-01-29 | Suresh (Piping Foreman) | spool erected on the 24 inch inlet line, done today
+2026-01-30 | Suresh (Piping Foreman) | hydrotest completed on inlet line, no leaks found
+2026-01-24 | Priya (Electrical Engineer) | power cable laid up to pump house from substation
+2026-01-27 | Priya (Electrical Engineer) | MCC panel installed and terminated at pump house
+2026-02-01 | Amit (Instrumentation) | pressure transmitter fitted on the 24 inch line
+2026-02-04 | Amit (Instrumentation) | loop check done for all pump house instruments
+2026-02-05 | HSE Team | safety walkdown completed before commissioning, pump house
