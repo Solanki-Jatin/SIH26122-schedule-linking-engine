@@ -10,6 +10,11 @@
 | Team | Popeye |
 | Status | Full pipeline (layers 1-6) built and tested, including API and dashboard. Demo video and PPT remain. |
 
+![tests](https://img.shields.io/badge/tests-19%2F19%20passing-3e7d53)
+![python](https://img.shields.io/badge/python-3.12%2B-2b4c6f)
+![node](https://img.shields.io/badge/node-18%2B-2b4c6f)
+![license](https://img.shields.io/badge/license-MIT-b8760f)
+
 ---
 
 ## Table of contents
@@ -17,6 +22,7 @@
 - [Overview](#overview)
 - [Problem statement summary](#problem-statement-summary)
 - [System architecture](#system-architecture)
+- [Dashboard](#dashboard)
 - [Tech stack](#tech-stack)
 - [Repository structure](#repository-structure)
 - [Getting started](#getting-started)
@@ -25,6 +31,8 @@
 - [Project status](#project-status)
 - [Design and documentation standards](#design-and-documentation-standards)
 - [Documentation](#documentation)
+- [Contributing](#contributing)
+- [License](#license)
 - [Team](#team)
 
 ---
@@ -71,24 +79,7 @@ execution patterns.
 Six layers. Layer 2 (the schedule graph and CPM engine) is shared state
 referenced by layers 3 and 4, not a sequential pipeline stage.
 
-```
-Field data sources (reports, sheets, voice notes)
-        |
-        v
-Layer 1: Data capture
-        |
-        v
-Layer 3: Linking engine  <----- references -----  Layer 2: Schedule graph
-        |                                          (baseline DAG + CPM engine)
-        v                                                  ^
-Layer 4: Recompute engine  ------ writes actuals back ------|
-        |
-        v
-Layer 5: Institutional memory
-        |
-        v
-Layer 6: API + dashboard
-```
+![Architecture diagram: four functional zones, data ingestion, core processing engine, institutional memory, delivery interface, each showing its layers and tech stack](docs/images/architecture-diagram.svg)
 
 | Layer | Responsibility | Status |
 |---|---|---|
@@ -102,6 +93,17 @@ Layer 6: API + dashboard
 Full technical detail, including the exact data model, API contracts,
 and the reasoning behind each design choice, is in
 [`docs/architecture.md`](docs/architecture.md).
+
+## Dashboard
+
+Live screenshot of the running application: real baseline schedule, a
+field report actually submitted and auto-linked through the API
+(`spool erected on the 24 inch inlet line` correctly resolved to
+`PIP-002` at real computed confidence), the critical path highlighted in
+the Gantt view, the risk heatmap built from real per-discipline counts,
+and the dependency graph laid out by actual CPM `early_start` values.
+
+![SIH26122 dashboard: Gantt view with critical path highlighted, schedule table with status badges, risk heatmap by discipline, field report submission form, institutional memory query panel, and dependency graph](docs/images/dashboard-full.png)
 
 ## Tech stack
 
@@ -152,7 +154,7 @@ README.md
 Requires Python 3.12+ and Node 18+.
 
 ```bash
-git clone https://github.com/<org>/SIH26122-schedule-linking-engine.git
+git clone https://github.com/Solanki-Jatin/SIH26122-schedule-linking-engine.git
 cd SIH26122-schedule-linking-engine/backend
 pip install -r requirements.txt
 ```
@@ -211,9 +213,9 @@ confirmation, unknown-task 404 handling, memory queries).
 All six layers are built, wired together, and covered by a passing test
 suite: capture, schedule graph and CPM, linking, recompute, institutional
 memory, and the FastAPI + React layer. `backend/scripts/demo_flow.py` is
-a real, runnable walkthrough of the core value proposition end to end.
-Remaining work: the demo video, and folding this into the PPT and drive
-documentation.
+a real, runnable walkthrough of the core value proposition end to end,
+and the dashboard screenshot above is the live application, not a
+mockup. Remaining work: the demo video.
 
 ## Design and documentation standards
 
@@ -231,6 +233,15 @@ codebase.
 - [`docs/architecture.md`](docs/architecture.md): full architecture
   specification, layer-by-layer responsibilities, data model, API
   contracts, and the reasoning behind every technical decision.
+
+## Contributing
+
+Internal team guide, branch naming, commit conventions, and pre-PR
+checklist, is in [`CONTRIBUTING.md`](CONTRIBUTING.md).
+
+## License
+
+[MIT](LICENSE).
 
 ## Team
 
