@@ -6,7 +6,7 @@ Internal guide for the five of us working on this repo in parallel with SIH26099
 
 - `main` stays deployable. Work on a branch per layer or feature:
   `layer5-memory`, `frontend-gantt`, `fix-linking-threshold`, etc.
-- Open a PR into `main` even solo; it keeps a review trail before finals.
+- Open a PR into `main` even solo; it keeps a review trail before the deadline.
 
 ## Commit style
 

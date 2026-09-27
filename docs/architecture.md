@@ -10,7 +10,7 @@ even when wording or granularity differs, updates the schedule with a
 confidence score and audit trail, and turns closed-out projects into a
 queryable record for future planning.
 
-**Team:** Popeye, 5 members, SIH 2026 finals.
+**Team:** Popeye, 5 members, SIH 2026.
 **Problem Statement:** SIH26122, Oil India Limited.
 
 ## 2. Scope boundary (what this system is and is not)
@@ -113,10 +113,10 @@ a different granularity than the plan ("spool erected" -> "Erect Line
 **Method:** combined score from two signals.
 1. Token-level fuzzy string match (rapidfuzz, `token_sort_ratio`).
 2. TF-IDF cosine similarity (scikit-learn) over plan task names, as the
-   semantic-match component.
+   lexical similarity component.
 
 Combined into one confidence score (0.0-1.0), default weighting 0.4
-fuzzy / 0.6 semantic. **This weighting is a design choice, not a
+fuzzy / 0.6 lexical (TF-IDF). **This weighting is a design choice, not a
 tuned/tested result**, to be validated once we have pilot data.
 
 **Threshold behavior:** confidence >= 0.55 (design choice, tunable) auto
@@ -126,7 +126,7 @@ confirm. This directly satisfies the PS requirement to never silently
 drop unmatched items.
 
 **On SBERT (documented honestly for the PPT/doc):** the PS expects
-handling of genuine wording/granularity mismatches, i.e. semantic
+handling of genuine wording/granularity mismatches, i.e. beyond exact wording
 matching, not just lexical. SBERT (Reimers & Gurevych, 2019,
 https://arxiv.org/abs/1908.10084) is the correct production upgrade for
 this. The prototype uses TF-IDF cosine similarity instead of a live
@@ -153,7 +153,7 @@ overwrites the plan silently.
 
 ### Layer 5: Institutional memory
 
-**Status: not yet built.** Responsibility: persist every confirmed
+**Status: built and tested.** Responsibility: persist every confirmed
 actual event (not just the current state, the full history) in a
 structured, queryable store, so patterns can be queried after project
 closure, e.g. "average delay for civil foundation work across past

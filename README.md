@@ -6,7 +6,7 @@
 |---|---|
 | Problem Statement | SIH26122 |
 | Organization | Oil India Limited |
-| Event | Smart India Hackathon 2026 (Finals) |
+| Event | Smart India Hackathon 2026 |
 | Team | Popeye |
 | Status | Full pipeline (layers 1-6) built and tested, including API and dashboard. Demo video and PPT remain. |
 
@@ -85,7 +85,7 @@ referenced by layers 3 and 4, not a sequential pipeline stage.
 |---|---|---|
 | 1. Data capture | Normalizes CSV/spreadsheet and free-text/voice field reports into a common shape | Built, tested |
 | 2. Schedule graph model | DAG of L5/L6 activities, Critical Path Method (CPM) computation | Built, tested |
-| 3. Linking engine | Fuzzy string match + TF-IDF semantic similarity, confidence-scored, never silently drops unmatched items | Built, tested |
+| 3. Linking engine | Fuzzy string match + TF-IDF lexical similarity, confidence-scored, never silently drops unmatched items | Built, tested |
 | 4. Recompute engine | Applies confirmed updates, re-runs CPM, diffs critical path and at-risk tasks, computes new forecast completion | Built, tested |
 | 5. Institutional memory | Structured, queryable store of confirmed execution events across projects | Built, tested |
 | 6. API + dashboard | FastAPI routes and a React dashboard (Gantt, dependency graph, risk heatmap by discipline) | Built, tested |
@@ -126,7 +126,7 @@ backend/
   app/
     layer1_capture/          report intake (CSV, free-text)
     layer2_schedule_graph/   DAG model, CPM engine, schedule loader
-    layer3_linking/          fuzzy + semantic linking engine
+    layer3_linking/          fuzzy + lexical (TF-IDF) linking engine
     layer4_recompute/        recompute + diff engine
     layer5_memory/           institutional memory store (SQLAlchemy)
     layer6_api/               FastAPI routes, schemas, app state
